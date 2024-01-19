@@ -4,6 +4,10 @@ const User = require('../models/UserModel');
 
 module.exports = {
   async create(name, username, password) {
+    const user = await User.findOne({username});
+
+    if(!!user) return { success: false, message: 'already registered user'};
+
     const hash = await bcrypt.hash(password, 10);
 
     await User.create({
